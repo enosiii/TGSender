@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Sender</title>
+  <style>
+    /* Styles for the toggle switch */
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .toggle-switch label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .toggle-switch input[type="checkbox"] {
+      width: 40px;
+      height: 20px;
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 10px;
+      background-color: #ccc;
+      position: relative;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .toggle-switch input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: white;
+      transition: 0.3s;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+
+    /* Hide the initially hidden iframe */
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Toggle Sender</h2>
+
+  <div class="toggle-switch">
+    <label>Toggle:</label>
+    <input type="checkbox" id="toggle" />
+  </div>
+
+  <iframe id="messageSender" src="messageSender.html"></iframe>
+  <iframe id="imageSender" src="imageSender.html"></iframe>
+
+  <script>
+    // JavaScript code remains the same
+
+    const toggleSwitch = document.getElementById('toggle');
+    const messageSenderFrame = document.getElementById('messageSender');
+    const imageSenderFrame = document.getElementById('imageSender');
+
+    toggleSwitch.addEventListener('change', function() {
+      if (toggleSwitch.checked) {
+        // Switched ON, show imageSender.html
+        messageSenderFrame.style.display = 'none';
+        imageSenderFrame.style.display = 'block';
+      } else {
+        // Switched OFF, show messageSender.html
+        messageSenderFrame.style.display = 'block';
+        imageSenderFrame.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

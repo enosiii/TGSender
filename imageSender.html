@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Telegram Bot Image Sender</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #000080, #000);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+    }
+
+     select { animation: neon 1s infinite alternate; }
+
+      .file-input {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: linear-gradient(to right, #4e9cff, #000);
+      color: #fff;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      animation: neon 1s infinite alternate;
+      
+    }
+
+     
+
+    select, textarea {
+      width: 300px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #fff;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      animation: neon 1s infinite alternate;
+    }
+
+    @keyframes neon {
+      0% {
+        box-shadow: 0 0 5px #fff, 0 0 15px #fff;
+      }
+      100% {
+        box-shadow: 0 0 5px #f0f, 0 0 10px #0ff, 0 0 15px #00f, 0 0 20px #f0f, 0 0 25px #0ff, 0 0 30px #00f;
+      }
+    }
+
+    button {
+      padding: 10px 20px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      background: linear-gradient(to right, #4e9cff, #0147ff);
+    }
+
+    button:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 110%;
+      background: linear-gradient(to right, #f0f, #0ff, #00f, #f0f, #0ff, #00f);
+      z-index: -1;
+      animation: neon-running 2s infinite linear;
+    }
+
+    @keyframes neon-running {
+      0% {
+        left: -100%;
+      }
+      50% {
+        left: -50%;
+      }
+      100% {
+        left: 0%;
+      }
+    }
+
+    .notification {
+      display: none;
+      background-color: #4e9cff;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Telegram Bot Image Sender</h2>
+
+  <label for="bot-select">Bot<br>🤖</label>
+  <select id="bot-select">
+    <option value="" disabled selected>Select Bot</option>
+    <option value="6152931857:AAGtVbVeG9nLcEMJ0GGSi9eOX7h84nWScqU">Lisa</option>
+    <option value="6129181655:AAFxDjx3CC7GLUNyyt64-z3AQyLvWk3kYgM">EZ Payment</option>
+    <option value="6169778938:AAGFWgtaA40onBNUJPC2bTOhP_RyZ9kGAhw">EZ LILO</option>
+    <option value="5297685776:AAG8Ovu7wGji_6MEarcyHW9rdBgGgl7hqGg">SiteLoc</option>
+  </select>
+
+  <br>
+
+  <label for="chat-select">Chat<br>👥</label>
+  <select id="chat-select">
+    <option value="" disabled selected>Select Chat</option>
+    <option value="874686030">Enosss</option>
+    <option value="-1001851017092">PLDT Payment Tracker</option>
+    <option value="-1001929420779">ENCOR GAMING LILO</option>
+    <option value="1415444423">Zha</option>
+    <option value="5089403694">Sumit</option>
+  </select>
+
+  <br>
+
+  <label for="image" class="file-label">Choose Image<br>📸</label>
+
+  <input type="file" id="image" class="file-input" accept="image/*" onchange="handleFileSelect(event)">
+
+  <br>
+
+  <label for="message">Caption<br>🏷️
+</label>
+  <textarea id="message" rows="1" cols="30" placeholder="Enter Image Caption"></textarea>
+
+  <br>
+
+  <button onclick="sendImage()">Send Image</button>
+
+  <div id="notification" class="notification"></div>
+
+  <script>
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      const fileName = file.name;
+      const fileLabel = document.querySelector('.file-label');
+      fileLabel.setAttribute('data-file-name', fileName);
+    }
+
+    function sendImage() {
+      const botToken = document.getElementById("bot-select").value;
+      const chatId = document.getElementById("chat-select").value;
+      const input = document.getElementById('image');
+      const message = document.getElementById("message").value;
+      const file = input.files[0];
+
+      if (file) {
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${chatId}&caption=${message}`, {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            showNotification('Image sent successfully');
+            console.log('Image sent successfully:', data);
+          })
+          .catch(error => {
+            showNotification('Error sending image');
+            console.error('Error sending image:', error);
+          });
+      } else {
+        showNotification('No image chosen');
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
