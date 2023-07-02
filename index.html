@@ -6,7 +6,6 @@
   <title>Toggle Sender</title>
   <style>
     /* Styles for the toggle switch */
-
     .toggle-switch {
       display: flex;
       align-items: center;
@@ -46,9 +45,14 @@
       transform: translateX(20px);
     }
 
-    /* Hide the initially hidden iframe */
+    /* Make the iframes fullscreen */
     iframe {
-      display: none;
+      position: fixed;
+      top: 15%;
+      left: 0;
+      width: 100%;
+      height: 85%;
+      border: none;
     }
   </style>
 </head>
@@ -65,8 +69,7 @@
 
   <script>
     // JavaScript code remains the same
-
-    const toggleSwitch = document.getElementById('toggle');
+const toggleSwitch = document.getElementById('toggle');
     const messageSenderFrame = document.getElementById('messageSender');
     const imageSenderFrame = document.getElementById('imageSender');
 
